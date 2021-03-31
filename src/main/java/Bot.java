@@ -15,6 +15,9 @@ import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
 
+    private List<String> incomeButtonsList = List.of("/Работа", "/Подработка", "/Продажа", "/Активы");
+    private List<String> expenditureButtonsList = List.of("/Еда", "/Жилье");
+
     public static void main(String[] args) {
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
@@ -32,11 +35,6 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
         try {
-            switch (text) {
-                case "Выберите категорию":
-                    setButtons(sendMessage);
-                    sendMessage(sendMessage);
-            }
             setButtons(sendMessage);
             sendMessage(sendMessage);
         } catch (TelegramApiException e) {
@@ -56,12 +54,19 @@ public class Bot extends TelegramLongPollingBot {
         KeyboardRow keyBoardSecondRow = new KeyboardRow();
 
         switch (sendMessage.getText()) {
-            case "Выберите категорию":
+            case "Выберите категорию дохода":
                 keyBoardFirstRow.add(new KeyboardButton("/Работа"));
                 keyBoardFirstRow.add(new KeyboardButton("/Подработка"));
 
                 keyBoardSecondRow.add(new KeyboardButton("/Продажа"));
                 keyBoardSecondRow.add(new KeyboardButton("/Активы"));
+                break;
+            case "Выберите категорию расхода":
+                keyBoardFirstRow.add(new KeyboardButton("/Еда"));
+                keyBoardFirstRow.add(new KeyboardButton("/Жилье"));
+
+                keyBoardSecondRow.add(new KeyboardButton("/Услуги"));
+                keyBoardSecondRow.add(new KeyboardButton("/Транспорт"));
                 break;
             default:
                 keyBoardFirstRow.add(new KeyboardButton("/Доход"));
@@ -82,13 +87,20 @@ public class Bot extends TelegramLongPollingBot {
         if (message != null && message.hasText()) {
             switch (message.getText()) {
                 case "/Доход":
-                    sendMsg(message, "Выберите категорию");
+                    sendMsg(message, "Выберите категорию дохода");
                     break;
                 case "/Расход":
-                    sendMsg(message, "Посмотреть Гарри Поттера с Димой");
+                    sendMsg(message, "Выберите категорию расхода");
                     break;
                 case "/Статистика":
                     sendMsg(message, "Любить Димку");
+                    break;
+                case "/start":
+                    sendMsg(message, "Выбирайте");
+                    break;
+                case "/Работа":
+                case "/Еда":
+                    sendMsg(message, "Введите сумму");
                     break;
                 default:
 //                    try {

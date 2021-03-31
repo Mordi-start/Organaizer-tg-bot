@@ -1,9 +1,13 @@
 package model;
 
-public class Finance {
+
+import java.util.Date;
+
+public class Transaction {
 
     private int id;
     private double sum;
+    private Date date;
 
     public int getId() {
         return id;
@@ -19,5 +23,13 @@ public class Finance {
 
     public void setSum(double sum) {
         this.sum = sum;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
